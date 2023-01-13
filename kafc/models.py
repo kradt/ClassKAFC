@@ -8,14 +8,14 @@ from kafc.schemas.user_schema import User as UserSchema
 
 
 class User(UserMixin):
-	def __init__(self, 
-				 id: str, 
-				 uuid: str, 
-				 name: str | None, 
-				 username: str, 
-				 role: str | None, 
-				 tasks: list, 
-				 lessons: list) -> None:
+	def __init__(self,
+				id: str, 
+				uuid: str, 
+				name: str | None, 
+				username: str, 
+				role: str | None, 
+				tasks: list, 
+				lessons: list) -> None:
 		self.id = id
 		self.uuid = uuid
 		self.name = name

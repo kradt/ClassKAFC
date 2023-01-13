@@ -1,5 +1,4 @@
 from telebot import TeleBot
-from flask import current_app
 
 from . import config
 from .tools import get_text

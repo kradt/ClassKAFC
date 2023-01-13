@@ -12,7 +12,6 @@ class TaskCreate(BaseModel):
 	lesson: LessonBase
 	
 
-#####################
 # Generaly Task schema
 class Task(TaskCreate):
 	id: int
