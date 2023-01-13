@@ -1,0 +1,101 @@
+.body{
+	padding: 0px;
+	margin: 0px;
+	background-color: #D9D9D9;
+}
+
+.btn-dark{
+	background-color:black;
+}
+
+.header{
+	background-color: #000000;
+}
+.logo-header{
+	text-align: center;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 50px;
+	line-height: 60px;
+	color: #FFFFFF;
+}
+
+.home{
+	text-align: start;
+}
+
+.description{
+	font-style: normal;
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 30px;
+	color: #000000;
+}
+.section{
+	margin-top: 50px;
+}
+
+.login-form{
+	background-color: #C7C4C4;
+	border: 2px solid #000000;
+	border-radius: 5px;
+	width: 100%;
+	text-align: center;
+}
+
+.login-form form{
+	width: 100%;
+}
+
+.title{
+	font-weight: 700;
+	background-color: #000000;
+	width: 100%;
+	text-align: center;
+	color: #FFFFFF;
+}
+.content{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.login-button{
+	text-transform: uppercase;
+	background: #000000;
+	border-radius: 10px;
+	color: #FFFFFF;
+	width: 60%;
+	height: 50px;
+	font-weight: 700;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 30px;
+	border:0;
+}
+.input-form{
+	background-color: #D9D9D9;
+	border: 1px solid #000000;
+	margin-bottom:15px;
+	margin-top:15px;
+	width:80%;
+	padding: 10px;
+	border-radius: 5px;
+	
+}
+.input-form::placeholder{
+	color: #828080;
+}
+
+.sign-up{
+	margin:40px;
+	text-align: start;
+}
+
+
+
+
+
+
+
+
+

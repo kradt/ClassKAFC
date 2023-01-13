@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Вхід
+{% endblock %}
+
+{% block content %}
+	<form action="{{ url_for('.login') }}" method="POST">	
+		{{ form.csrf_token }}
+		
+		{{ form.login(class="input-form") }}
+		{{ form.password(class="input-form") }}	
+		{{ form.submit(class="login-button") }}
+	</form>
+{% endblock %}
+
+{% block errors %}
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+				{% for message in messages %}
+					<div class="alert alert-dark" role="alert">
+  						{{ message }}
+					</div>
+				{% endfor %}
+		{% endif %}
+	{% endwith %}
+
+{% for field, errors in form.errors.items() %}
+	<small class="form-text text-muted ">
+		<div class="alert alert-dark" role="alert">
+	  			{{ ', '.join(errors) }}
+		</div>
+	</small>
+	{% endfor %}
+{% endblock %}
+
+{% block link %}
+	<small class="form-text text-muted ">
+		Ще не маєте свого аккаунта? 
+		<a href="{{ url_for('.sign_up') }}">Зареєструватися</a>
+	</small>
+{% endblock %}
+
+
+
