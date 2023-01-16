@@ -6,7 +6,9 @@ from .utils import ManageFile
 from .config import Config
 
 
-manage_s3 = ManageFile(Config.BUCKET_NAME)
+manage_s3 = ManageFile(bucket_name=Config.BUCKET_NAME, 
+					   aws_access_key_id=Config.AWS_ACCESS_KEY,
+					   aws_secret_access_key=Config.AWS_SECRET_KEY)
 login_manager = LoginManager()
 
 
