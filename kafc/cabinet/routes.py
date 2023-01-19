@@ -102,7 +102,6 @@ def download_file(id):
 @flask_login.login_required
 def cabinet_page(page=1):
 	tasks = cabinet_service.get_all_tasks(db=db.session, user_uuid=flask_login.current_user.uuid, page=page)
-	print(dir(request))
 	# If method called from sending task, param: from_task equal to 1
 	# In html document java script code check is param and if it equel 1 show modal message about success sending task
 	from_task = 0
