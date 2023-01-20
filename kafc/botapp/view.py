@@ -1,5 +1,6 @@
 from kafc.botapp import bot, bot_text, bot_service, keyboards_models as menu
 from .bot_engine import db
+from . import config
 
 
 # Func for unpack chat_id and message_id
@@ -18,7 +19,7 @@ def start(message):
 # Handler for get information about bot
 @bot.callback_query_handler(func=lambda call: True and str(call.data).split(" ")[0] == "info")
 def info_handler(call):
-	bot.edit_message_text(**path_edit(call), text=bot_text["info_text"], reply_markup=menu.keyboard_for_contact())
+	bot.edit_message_text(**path_edit(call), text=bot_text["info_text"].format(config.WEBHOOK_HOST), reply_markup=menu.keyboard_for_contact())
 
 
 # Handler for back to start keyboard
