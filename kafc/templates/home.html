@@ -1,4 +1,4 @@
-{% extends 'basic.html' %}
+{% extends 'base.html' %}
 
 {% block base_content %}
 <div class="modal fade" id="FromSendTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -153,15 +153,7 @@
 		</div>
 	</form>
 	{% endif %}
-	{% with messages = get_flashed_messages() %}
-		{% if messages %}
-				{% for message in messages %}
-					<div class="alert alert-dark" role="alert">
-  						{{ message }}
-					</div>
-				{% endfor %}
-		{% endif %}
-	{% endwith %}
+	{% include '_errors.html' %}
 	
 </div>
 <div class="col-md-6 task-block" >
