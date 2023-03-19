@@ -72,7 +72,7 @@ def send_task():
 			return redirect(url_for(".cabinet_page", from_task=True))
 		except ValueError:
 			flash("Перед тим як відправляти завдання, добавте свій предмет в особистому кабінеті")
-	return render_template("task.html", form=form, user=flask_login.current_user)
+	return render_template("send_task.html", form=form, user=flask_login.current_user)
 
 
 # Task page
