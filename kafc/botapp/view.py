@@ -5,7 +5,7 @@ from . import config
 
 # Func for unpack chat_id and message_id
 def path_edit(call):
-	return {"chat_id": call.message.chat.id, "message_id":call.message.message_id}
+	return {"chat_id": call.message.chat.id, "message_id": call.message.message_id}
 
 
 # Handler for start relation with bot
@@ -19,7 +19,8 @@ def start(message):
 # Handler for get information about bot
 @bot.callback_query_handler(func=lambda call: True and str(call.data).split(" ")[0] == "info")
 def info_handler(call):
-	bot.edit_message_text(**path_edit(call), text=bot_text["info_text"].format(config.WEBHOOK_HOST), reply_markup=menu.keyboard_for_contact())
+	bot.edit_message_text(**path_edit(call), text=bot_text["info_text"].format(config.WEBHOOK_HOST),
+		reply_markup=menu.keyboard_for_contact())
 
 
 # Handler for back to start keyboard
@@ -79,4 +80,3 @@ def task_handler(call):
 		keyboard = menu.keyboard_for_start()
 
 	bot.edit_message_text(**path_edit(call), reply_markup=keyboard, text=text)
-

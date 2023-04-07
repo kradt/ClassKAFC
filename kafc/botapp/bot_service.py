@@ -2,12 +2,11 @@ import telebot
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from . import bot, bot_text
+from . import bot_text
 from ..database import models
-from ..schemas.lesson_schema import LessonList
 
 
-# Fuction for get all lessons from base
+# Function for get all lessons from base
 def get_all_lessons(db: Session) -> list[models.Lesson]:
 	lessons = db.query(models.Lesson).all()
 	return lessons
@@ -53,12 +52,13 @@ def get_all_users(db: Session) -> list[str]:
 
 # Function for send file by chat_id
 # If file sending firstly, file_id added to base
-def send_file(db: Session,
-			  bot: telebot.TeleBot, 
-			  chat_id: str, 
-			  task: models.Task, 
-			  caption: str, 
-			  keyboard: telebot.types.InlineKeyboardMarkup | None = None) -> None:
+def send_file(
+		db: Session,
+		bot: telebot.TeleBot,
+		chat_id: str,
+		task: models.Task,
+		caption: str,
+		keyboard: telebot.types.InlineKeyboardMarkup | None = None) -> None:
 	# select file_id from task file
 	file = task.file.fileid
 	# if file_id is None download file from aws: s3 
@@ -86,4 +86,3 @@ def send_task_to_all(db: Session, bot: telebot.TeleBot, task: models.Task) -> No
 		# If user block bot
 		except Exception:
 			continue
-

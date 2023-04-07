@@ -1,20 +1,20 @@
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager
-import telebot
 
 from .utils import ManageFile
 from .config import Config
 
 
-manage_s3 = ManageFile(bucket_name=Config.BUCKET_NAME, 
-					   aws_access_key_id=Config.AWS_ACCESS_KEY,
-					   aws_secret_access_key=Config.AWS_SECRET_KEY)
+manage_s3 = ManageFile(
+	bucket_name=Config.BUCKET_NAME,
+	aws_access_key_id=Config.AWS_ACCESS_KEY,
+	aws_secret_access_key=Config.AWS_SECRET_KEY)
 login_manager = LoginManager()
 
 
 def create_app(configurate=Config):
 	app = Flask(__name__)
-	app.config.from_object(Config)
+	app.config.from_object(configurate)
 
 	from .database import db, migrate
 	db.init_app(app)
@@ -41,8 +41,3 @@ def create_app(configurate=Config):
 	app.register_blueprint(cab_bp, url_prefix="/me")
 	
 	return app
-
-
-
-
-

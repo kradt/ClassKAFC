@@ -1,9 +1,8 @@
 import telebot
-from flask import Flask, request, Blueprint
+from flask import request, Blueprint
 
 from . import config
 from .view import bot
-from ..database import db, models
 
 
 bot_bp = Blueprint(name="bot_bp", import_name=__name__)
@@ -20,4 +19,3 @@ def webhook():
 	bot.remove_webhook()
 	bot.set_webhook(url=config.WEBHOOK_URL_BASE + config.WEBHOOK_URL_PATH)
 	return "!", 200
-

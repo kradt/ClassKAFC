@@ -44,7 +44,7 @@ def sign_up():
 	if form.validate_on_submit():
 		try:
 			validate_user = UserCreate(username=form.login.data, password=form.password.data)
-			created_user = auth_service.create_user(db=db.session, user=validate_user)
+			auth_service.create_user(db=db.session, user=validate_user)
 		except IntegrityError:
 			flash("Користувач з таким username уже існує")
 		except ValidationError as e:
@@ -68,7 +68,3 @@ def logout_user():
 @flask_login.login_required
 def first_page():
 	return redirect(url_for("cab_bp.cabinet_page"))
-
-
-
-

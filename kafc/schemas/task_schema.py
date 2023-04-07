@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 from .lesson_schema import LessonBase
 from .file_schema import FileBase
@@ -12,7 +12,7 @@ class TaskCreate(BaseModel):
 	lesson: LessonBase
 	
 
-# Generaly Task schema
+# Generally Task schema
 class Task(TaskCreate):
 	id: int
 	date_publish: str

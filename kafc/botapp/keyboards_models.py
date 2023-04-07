@@ -7,7 +7,7 @@ from .tools import create_inlineKeyboard
 
 
 # Keyboard for start relation with bot
-def keyboard_for_start() -> telebot.types.InlineKeyboardMarkup:
+def keyboard_for_start() -> object:
 	data = bot_text["welcome_reply"]
 	keyboard = create_inlineKeyboard(data, 2)
 	return keyboard
@@ -38,7 +38,7 @@ def keyboard_for_lessons(lessons: list[models.Lesson]) -> telebot.types.InlineKe
 # Keyboard for back to choice lesson
 def keyboard_for_back_to_lessons() -> telebot.types.InlineKeyboardMarkup:
 	data = {bot_text["text_for_back"]: bot_text["back_to_lesson"]}
-	keyboard = create_inlineKeyboard(data,1)
+	keyboard = create_inlineKeyboard(data, 1)
 	return keyboard
 
 
@@ -53,5 +53,5 @@ def keyboard_for_tasks(tasks: list[models.Task]) -> telebot.types.InlineKeyboard
 # Keyboard for back to choice tasks
 def keyboard_for_back_to_tasks(id: str) -> telebot.types.InlineKeyboardMarkup:
 	data = {bot_text["text_for_back"]: bot_text["back_to_tasks"].format(id)}
-	keyboard = create_inlineKeyboard(data,1)
+	keyboard = create_inlineKeyboard(data, 1)
 	return keyboard

@@ -1,7 +1,7 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 from .lesson_schema import LessonBase
-from .task_schema import Task, TaskCreate
+from .task_schema import Task
 
 
 # Base user schema
@@ -14,18 +14,14 @@ class UserCreate(UserBase):
 	password: str
 
 
-# Generaly user schema
+# Generally user schema
 class User(UserBase):
-	id:int
+	id: int
 	name: str | None
 	role: str | None
-	uuid:str
+	uuid: str
 	lessons: list[LessonBase]
 	tasks: list[Task]
 
 	class Config:
 		orm_mode = True
-
-
-
-

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from kafc.database import models
-from kafc.schemas.user_schema import User, UserCreate
+from kafc.schemas.user_schema import UserCreate
 
 
 # function returning user by uuid
@@ -20,6 +20,3 @@ def create_user(db: Session, user: UserCreate) -> models.User | None:
 	db.add(db_user)	
 	db.commit()
 	return db_user
-
-
-

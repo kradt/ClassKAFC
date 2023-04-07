@@ -1,6 +1,4 @@
-import math
 from sqlalchemy.orm import Session
-from typing import BinaryIO
 from werkzeug.datastructures import FileStorage
 
 from kafc.database import models
@@ -9,8 +7,7 @@ from kafc.schemas.task_schema import TaskCreate
 
 #---- Task Functionality ----
 
-
-# fucnction create new task by TaskCreate schema
+# function create new task by TaskCreate schema
 def create_task(db: Session, task: TaskCreate, user_uuid: str, file: FileStorage | None = None) -> models.Task:
 	user = db.query(models.User).filter_by(uuid=user_uuid).first()
 	db_task = models.Task(title=task.title, description=task.description, group=task.group)
@@ -29,7 +26,7 @@ def create_task(db: Session, task: TaskCreate, user_uuid: str, file: FileStorage
 	return db_task
 
 
-# fucnction delete task and file inside him
+# function delete task and file inside him
 def delete_task_by_id(db: Session, user_uuid: str, id: int) -> None:
 	task = get_task_by_id(db, user_uuid, id)
 	if task:
@@ -42,12 +39,12 @@ def delete_task_by_id(db: Session, user_uuid: str, id: int) -> None:
 
 # function returning all tasks by user for pagination process
 def get_all_tasks(db: Session, user_uuid: str, page: int = 1, limit: int = 5) -> dict:
-	tasks = db.query(models.Task) \
-			  .join(models.User) \
-			  .filter_by(uuid=user_uuid) \
-			  .filter(models.Task.author_id==models.User.id) \
-			  .order_by(models.Task.date_publish.desc()) \
-			  .paginate(per_page=limit, page=page)
+	tasks: dict = db.query(models.Task) \
+		.join(models.User) \
+		.filter_by(uuid=user_uuid) \
+		.filter(models.Task.author_id == models.User.id) \
+		.order_by(models.Task.date_publish.desc()) \
+		.paginate(per_page=limit, page=page)
 
 	return tasks
 
@@ -55,11 +52,11 @@ def get_all_tasks(db: Session, user_uuid: str, page: int = 1, limit: int = 5) ->
 # function returning particular task by id
 def get_task_by_id(db: Session, user_uuid: str, id: int) -> models.Task:
 	task = db.query(models.Task) \
-			 .filter_by(id=id) \
-			 .join(models.User) \
-			 .filter_by(uuid=user_uuid) \
-			 .filter(models.Task.author_id==models.User.id) \
-			 .first()
+		.filter_by(id=id) \
+		.join(models.User) \
+		.filter_by(uuid=user_uuid) \
+		.filter(models.Task.author_id == models.User.id) \
+		.first()
 
 	return task
 	
@@ -67,10 +64,11 @@ def get_task_by_id(db: Session, user_uuid: str, id: int) -> models.Task:
 #---- User functionality ----
 
 # function update user data
-def update_user(db: Session,
-				user_uuid: str,
-				name: str | None = None,
-				lesson_name: str | None = None) -> models.User | None:
+def update_user(
+		db: Session,
+		user_uuid: str,
+		name: str | None = None,
+		lesson_name: str | None = None) -> models.User | None:
 
 	user = db.query(models.User).filter_by(uuid=user_uuid).first()
 	if not user:
@@ -101,6 +99,6 @@ def remove_user_lesson(db: Session, user_uuid: str, lesson_name: str) -> models.
 #---- File Functionality ----
 
 # function getting file
-def get_file_by_task_id(db:Session, user_uuid: str, id: int) -> models.File:
+def get_file_by_task_id(db: Session, user_uuid: str, id: int) -> models.File:
 	task = get_task_by_id(db, user_uuid, id)
 	return task.file

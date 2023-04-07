@@ -1,7 +1,5 @@
 import uuid
 import datetime
-import boto3
-import re
 import io
 from werkzeug.security import generate_password_hash
 from sqlalchemy.ext.declarative import DeclarativeMeta
@@ -21,9 +19,9 @@ user_lesson = db.Table(
 
 class User(BaseModel):
     """
-        Table User - it's Parent table of relationship, It have all data about user
-        User have many to one relationship with Table Task
-        User have many to many relationship with Table Lesson
+        Table User - it's Parent table of relationship, It has all data about user
+        have many-to-one relationship with Table Task
+        User have many-to-many relationship with Table Lesson
     """
     __tablename__ = "user"
     
@@ -90,7 +88,8 @@ class File(BaseModel):
     def __repr__(self) -> str:
         return f"<File {self.id}>"
 
-    def upload_fileobj(self, file: bytes, filename: str) -> None:
+    @staticmethod
+    def upload_fileobj(file: bytes, filename: str) -> None:
         manage_s3.upload_file(io.BytesIO(file), filename)
 
     def drop_file(self):
@@ -142,8 +141,7 @@ class BotUser(BaseModel):
     def __init__(self, user_id: str, username: str, group: int = 351) -> None: 
         self.user_id = user_id
         self.username = username
-        self.group = 351
+        self.group = group
 
     def __repr__(self) -> str:
         return f"<User {self.username}"
-
