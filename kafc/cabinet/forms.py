@@ -41,7 +41,7 @@ class TaskForm(FlaskForm):
     def __init__(self, lessons, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
         if lessons:
-            choices = [(i, i) for i in lessons]
+            choices = [(i.name, i.name) for i in lessons]
         else:
             choices = [("0", "Ви ще не добавляли предмети в особистому кабінеті")]
         self.lesson.choices = choices
