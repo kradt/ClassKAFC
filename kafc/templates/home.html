@@ -127,7 +127,7 @@
 			{% if user.lessons %}
 				{% for l in user.lessons %}
 					<button type="button" class="btn btn-outline-dark remove-lesson" data-toggle="modal" data-target="#RemoveLesson">
-						{{ l }}
+						{{ l.name }}
 					</button>
 				{% endfor %}
 				

@@ -6,6 +6,7 @@ def test_request_example(client):
     assert response.status_code == 200
     assert b"Please log in to access this page" in response.data
 
+
 def test_register_user(client):
     login = "test"
     password = "A9090997a"
@@ -15,7 +16,7 @@ def test_register_user(client):
                                data={"login": login, "password": password, "repeat_password": password},
                                follow_redirects=True)
         user = models.User.query.filter_by(username=login).first()
-    assert user != None
+    assert user is not None
     assert user.username == login
     assert response.status_code == 200
 
@@ -32,4 +33,13 @@ def test_user_already_exist(client):
     assert response.status_code == 200
 
 
+def test_user_login(client):
+    login = "test"
+    password = "A9090997a"
 
+    with client:
+        response = client.post("/auth/login",
+                               data={"login": login, "password": password},
+                               follow_redirects=True)
+    print(response)
+    assert response.status_code == 200
