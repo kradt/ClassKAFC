@@ -2,10 +2,12 @@ import flask_login
 from flask import Blueprint, render_template, redirect, flash, url_for
 from werkzeug.security import check_password_hash
 from pydantic import ValidationError
+
 from sqlalchemy.exc import IntegrityError
 
 from ..database import db
-from kafc.models import User
+from kafc.database import models
+from kafc import login_manager
 from kafc.schemas.user_schema import UserCreate, User as UserSchema
 from .forms import LoginForm, SignUpForm
 from . import auth_service
@@ -26,12 +28,11 @@ def login():
 			flash("Не правильний пароль")
 		else:
 			try:
-				validate_user = UserSchema.from_orm(db_user)
+				UserSchema.from_orm(db_user)
 			except ValidationError as e:
 				flash(e)
 			else:
-				user = User(**validate_user.dict())
-				flask_login.login_user(user, remember=True)
+				flask_login.login_user(db_user, remember=True)
 				return redirect(url_for(".first_page"))
 
 	return render_template("login.html", form=form)
@@ -68,3 +69,13 @@ def logout_user():
 @flask_login.login_required
 def first_page():
 	return redirect(url_for("cab_bp.cabinet_page"))
+
+
+@login_manager.user_loader
+def load_user(user_id):
+	db_user = db.session.query(models.User).filter_by(uuid=user_id).first()
+	try:
+		UserSchema.from_orm(db_user)
+	except ValidationError:
+		return None
+	return db_user if db_user else None

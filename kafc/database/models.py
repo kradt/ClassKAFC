@@ -1,6 +1,7 @@
 import uuid
 import datetime
 import io
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
@@ -17,7 +18,7 @@ user_lesson = db.Table(
 )
 
 
-class User(BaseModel):
+class User(BaseModel, UserMixin):
     """
         Table User - it's Parent table of relationship, It has all data about user
         have many-to-one relationship with Table Task
@@ -43,6 +44,9 @@ class User(BaseModel):
 
     def __repr__(self) -> str:
         return f"<User {self.username} >"
+
+    def get_id(self) -> str:
+        return self.uuid
 
 
 class Lesson(BaseModel):
