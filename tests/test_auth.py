@@ -21,11 +21,14 @@ def test_register_user(client):
 
 
 def test_user_already_exist(client):
+    login = "test"
+    password = "A9090997a"
+
     with client:
-        the_same_response = client.post("/auth/sign-up",
+        response = client.post("/auth/sign-up",
                                data={"login": login, "password": password, "repeat_password": password},
                                follow_redirects=True)
-    assert "Користувач з таким username уже існує" in the_same_response.data
+    assert bytes("Користувач з таким username уже існує", "utf-8") in response.data
     assert response.status_code == 200
 
 
