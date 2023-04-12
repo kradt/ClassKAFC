@@ -16,7 +16,7 @@ class ManageFile:
                                    aws_secret_access_key=aws_secret_access_key)
 
     def upload_file(self, file: BinaryIO, filename: str):
-        self.client.upload_fileobj(self.bucket_name, filename)
+        self.client.upload_fileobj(file, self.bucket_name, filename)
 
     def download_file(self, filename: str) -> BinaryIO:
         file = io.BytesIO()
