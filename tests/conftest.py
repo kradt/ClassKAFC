@@ -36,3 +36,11 @@ def login(client):
         yield response
     with client:
         client.post("/auth/logout")
+
+
+@pytest.fixture()
+def lesson(client, login):
+    lesson = "math"
+    client.post("/me/update_user", data={"lesson": lesson})
+    yield lesson
+    client.post("/me/remove-lesson", data={"lesson": lesson})

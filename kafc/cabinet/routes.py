@@ -66,7 +66,7 @@ def send_task():
     form = TaskForm(lessons=flask_login.current_user.lessons)
     if form.validate_on_submit():
         lesson = form.lesson.data
-        # If lesson wasn't choised it value equel "0"
+        # If lesson wasn't choose it value equal "0"
         lesson = LessonBase(name=lesson) if lesson != "0" else None
         try:
             validate_task = TaskCreate(title=form.title.data, description=form.description.data, group=form.group.data,
