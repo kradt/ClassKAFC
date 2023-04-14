@@ -13,6 +13,7 @@ def app():
 
     yield app
 
+
 @pytest.fixture
 def client(app):
     return app.test_client()
@@ -21,3 +22,17 @@ def client(app):
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
+
+
+@pytest.fixture()
+def login(client):
+    login = "test"
+    password = "A9090997a"
+
+    with client:
+        response = client.post("/auth/login",
+                               data={"login": login, "password": password},
+                               follow_redirects=True)
+        yield response
+    with client:
+        client.post("/auth/logout")
