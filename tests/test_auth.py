@@ -1,12 +1,6 @@
 from kafc.database import models
 
 
-def test_request_example(client):
-    response = client.get("/me", follow_redirects=True)
-    assert response.status_code == 200
-    assert b"Please log in to access this page" in response.data
-
-
 def test_register_user(client):
     login = "test"
     password = "A9090997a"
@@ -41,5 +35,12 @@ def test_user_login(client):
         response = client.post("/auth/login",
                                data={"login": login, "password": password},
                                follow_redirects=True)
-    print(response)
+    assert response.request.path == "/me/"
     assert response.status_code == 200
+
+
+def test_cabinet_home_page_without_login(client):
+    with client:
+        response = client.get("/me", follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Please log in to access this page" in response.data
