@@ -62,7 +62,10 @@ def test_update_user_information(client, login):
     name = "Alex"
     lesson = "OOP"
     response = client.post("/me/update_user", data={"name": name, "lesson": lesson}, follow_redirects=True)
-    print(response)
+    from flask_login import current_user
+    with client.application.app_context():
+        assert current_user.name == name
+        assert lesson in [i.name for i in current_user.lessons]
     assert response.status_code == 200
     assert bytes(name, "utf-8") in response.data
     assert bytes(lesson, "utf-8") in response.data
