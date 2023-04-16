@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block base_content %}
+<div class="modal fade" id="FromSendTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Завдання успішно відправлено учням!</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Дякуюємо що користуєтесь нашим веб-додатком!
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-secondary" href="{{ url_for('.cabinet_page') }}">Close</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="ChangeName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					Зміна імені
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+			</div>
+			<form action="{{url_for('.update_user')}}" method="POST" class="m-2">
+				<div class="modal-body">
+					Введіть Ім'я яке студенти будуть бачити при відправленні завдання
+					<input type="text" name="name" placeholder="Ім'я По батькові" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">
+						Відмінити
+					</button>
+					<button type="submit" class="btn btn-primary">
+						Змінити Ім'я
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="AddTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					Добавити Предмет
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+			</div>
+			<form action="{{url_for('.update_user')}}" method="POST" class="m-2">
+				<div class="modal-body">
+					Введіть назву предмету
+					<input type="text" name="lesson" placeholder="Предмет" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">
+						Відмінити
+					</button>
+					<button type="submit" class="btn btn-primary">
+						Зберегти
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="RemoveLesson" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					Видалити предмет
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+			</div>
+			<form action="{{url_for('.remove_lesson')}}" method="POST" class="m-2">
+				<div class="modal-body">
+					<input type="text" name="lesson" class="lesson-value">
+					<p class="lesson-text"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">
+						Відмінити
+					</button>
+					<button type="submit" class="btn btn-danger">
+						Видалити
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6">
+	{% if user.name %}
+	<h4 class="mb-5">
+		Ваше Ім'я: 
+		<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ChangeName">
+			{{ user.name }}
+		</button>
+	</h4>
+	<div class="mb-5">
+		<h4 class="mb-3">
+			Ваші Предмети: 
+			{% if user.lessons %}
+				{% for l in user.lessons %}
+					<button type="button" class="btn btn-outline-dark remove-lesson" data-toggle="modal" data-target="#RemoveLesson">
+						{{ l.name }}
+					</button>
+				{% endfor %}
+				
+			{% endif %}
+			<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#AddTask">
+				+
+			</button>
+		</h4>
+	</div>
+	<a class="btn btn-black send-task-button mb-5" href="{{ url_for('.send_task') }}">
+		Відправити завдання
+	</a>
+	{% else %}
+	<form action="{{  url_for('.update_user')  }}" method="POST" class="mb-5">
+		<div class="form-row">
+			<div class="col">
+				<h3 for="name">
+					Як до Вас можна звертатися?
+				</h3>
+				{{ name_form.name(class="form-control mb-2") }}
+				{{ name_form.submit(class="btn btn-black") }}
+			</div>
+		</div>
+	</form>
+	{% endif %}
+	{% include '_errors.html' %}
+	
+</div>
+<div class="col-md-6 task-block" >
+	{% if tasks.items %}
+		
+		<h2 class="center">
+			Мої завдання
+		</h2>
+		<div class="card" >
+				<ul class="list-group list-group-flush">
+					{% for task in tasks.items %}
+						<li class="list-group-item">
+							<a href="{{ url_for('.task_page', id=task.id) }}" class="task-link">
+								<h6 class="card-subtitle mb-2 text-muted">{{ task.date_publish }}</h6>
+								{{ task.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+				
+		</div>
+		{% if tasks.pages | int > 1 %}
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item">
+
+					{% if tasks.page | int > 1 %}
+						<a class="page-link" href="{{ url_for('.cabinet_page', page=tasks.page| int - 1 ) }}" aria-label="Previous">
+					{% else %}
+						<a class="page-link" href="{{ url_for('.cabinet_page', page=tasks.page ) }}" aria-label="Previous">
+					{% endif %}
+						<span aria-hidden="true">&laquo;</span>
+						<span class="sr-only">Previous</span>
+					</a>
+
+				</li>
+
+				{% for page in range(1, tasks.pages| int + 1) %}
+
+					{% if page == tasks.page %}
+						<li class="page-item actives"> <a class="page-link actives" href="{{ url_for('.cabinet_page', page=page) }}">{{ page }}</a></li>
+					{% else %}
+						<li class="page-item"><a class="page-link" href="{{ url_for('.cabinet_page', page=page) }}">{{ page }}</a></li>
+					{% endif %}
+				{% endfor %}
+
+				<li class="page-item">
+
+					{% if tasks.pages > tasks.page %}
+						<a class="page-link" href="{{ tasks.page | int + 1 }}" aria-label="Next">
+					{% else %}
+						<a class="page-link" href="{{ tasks.page }}" aria-label="Next">
+					{% endif %}
+						<span aria-hidden="true">&raquo;</span>
+						<span class="sr-only">Next</span>
+					</a>
+
+				</li>
+			</ul>
+		</nav>
+		{% endif %}
+	{% else %}
+		<h3 class="center">
+			Тут будуть з'являтися ваші завдання
+		</h3>
+	{% endif %}
+
+</div>
+<script type="text/javascript">
+	var buttons = document.getElementsByClassName("remove-lesson");
+	for(i=0; i < buttons.length; i++){
+		buttons[i].addEventListener('click', function(e){
+			var name = e.target.innerText
+			var text = document.querySelector(".lesson-text")
+			var value = document.querySelector(".lesson-value")
+			value.value = name
+			text.innerHTML += "Ви дійсно бажаєте видалити предмет " + name + "?"
+		})}
+	var a = {{ from_task }}
+	if(a){
+		$('#FromSendTask').modal('show');
+	}
+</script>
+{% endblock %}

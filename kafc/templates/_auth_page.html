@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block base_content %}
+<div class="col-md-6">
+	<p class="description">
+		Сайт був створений за підтримки 351 групи Київсього Авіаційного Фахового Колледжу для організації та автоматизації навчального процессу в умовах дистанційного навчання
+	</p>
+</div>
+<div class="col-md-6">
+	<div class="login-form">
+		<div class="title">
+			<h1>
+				{% block title %}
+
+				{% endblock %}
+			</h1>
+		</div>
+		<div class="content">
+			{% block content %}
+
+			{% endblock %}
+		</div>
+		<div class="errors">
+			{% block errors %}
+			{% endblock  %}
+		</div>
+		<div class="sign-up">
+			<p>
+				{% block link %}
+				{% endblock %}
+			</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Send Task
+{% endblock %}
+
+{% block base_content %}
+<div class="col-md-12">
+	<form action="{{url_for('.send_task')}}" method="POST" enctype="multipart/form-data">
+		{{ form.csrf_token }}
+		<div class="mb-3">
+			<label>Заголовок</label>
+			{{ form.title(class="form-control") }}
+		</div>
+		<div class="mb-3">
+			<label>Завдання</label>
+			{{ form.description(class="form-control") }}
+		</div>
+		<div class="custom-file mb-3">
+			{{ form.file(class="custom-file-input") }}
+			<label class="custom-file-label">Прикріпіть файл, якщо це потрібно</label>
+		</div>
+		<div class="mb-3">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="validatedInputGroupSelect">Група</label>
+				</div>
+				{{ form.group(class="custom-select") }}
+			</div>
+		</div>
+		<div class="mb-3">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="validatedInputGroupSelect">Предмет</label>
+				</div>
+				{{ form.lesson(class="custom-select") }}
+			</div>
+		</div>
+		
+		{% include '_errors.html' %}
+
+		{{ form.submit(class="btn btn-dark") }}
+	</form>
+</div>
+
+<script type="text/javascript">
+	document.querySelector('.custom-file-input').addEventListener('change',function(e){
+		var fileName = document.getElementById("customFile").files[0].name;
+		var nextSibling = e.target.nextElementSibling
+		nextSibling.innerText = fileName })
+</script>			
+{% endblock %}
