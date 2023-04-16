@@ -5,7 +5,7 @@ from kafc.database import models
 from kafc.schemas.task_schema import TaskCreate
 
 
-#---- Task Functionality ----
+# ---- Task Functionality ----
 
 # function create new task by TaskCreate schema
 def create_task(db: Session, task: TaskCreate, user_uuid: str, file: FileStorage | None = None) -> models.Task:
@@ -61,7 +61,7 @@ def get_task_by_id(db: Session, user_uuid: str, id: int) -> models.Task:
 	return task
 	
 
-#---- User functionality ----
+# ---- User functionality ----
 
 # function update user data
 def update_user(
@@ -96,7 +96,7 @@ def remove_user_lesson(db: Session, user_uuid: str, lesson_name: str) -> models.
 	return user
 
 
-#---- File Functionality ----
+# ---- File Functionality ----
 
 # function getting file
 def get_file_by_task_id(db: Session, user_uuid: str, id: int) -> models.File:

@@ -24,7 +24,7 @@ def get_task(db: Session, id: str) -> models.Task:
 	return task
 
 
-# Fucntion for add file_id for already existing file
+# Function for add file_id for already existing file
 def file_add_file_id(db: Session, filename: str, fileid: str) -> None:
 	file = db.query(models.File).filter_by(obj_name=filename).first()
 	file.fileid = fileid
@@ -68,7 +68,7 @@ def send_file(
 
 	f = bot.send_document(chat_id, document=file, caption=caption, reply_markup=keyboard)
 	document_id = f.document.file_id
-	# if file_id sent file not equel file_id in base add file_id to file column in base
+	# if file_id sent file not equal file_id in base add file_id to file column in base
 	if file != document_id:
 		file_add_file_id(db, task.file.obj_name, document_id)
 
