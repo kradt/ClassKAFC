@@ -7,7 +7,7 @@ from kafc.schemas.task_schema import TaskCreate
 from kafc.schemas.lesson_schema import LessonBase
 from .forms import NameForm, LessonForm, TaskForm
 from . import cabinet_service
-from ..botapp import bot_service, bot
+from ..botapp import bot_service, bot, tasks as bot_tasks
 
 cab_bp = Blueprint(name="cab_bp", template_folder="templates", static_folder="static", import_name=__name__)
 
@@ -73,7 +73,7 @@ def send_task():
                                        lesson=lesson)
             db_task = cabinet_service.create_task(db=db.session, task=validate_task,
                                                   user_uuid=flask_login.current_user.uuid, file=form.file.data)
-            bot_service.send_task_to_all(db=db.session, bot=bot, task=db_task)
+            bot_tasks.send_classtask_to_all_students.delay(db=db.session, bot=bot, task=db_task)
             return redirect(url_for(".cabinet_page", from_task=True))
         except ValueError:
             flash("Перед тим як відправляти завдання, добавте свій предмет в особистому кабінеті")
