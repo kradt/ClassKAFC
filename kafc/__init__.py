@@ -1,14 +1,16 @@
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 
-from .utils import ManageFile
+from .celery_utills import celery_init_app
+from .utills import ManageFile
 from .config import Config
 
 
 manage_s3 = ManageFile(
 	bucket_name=Config.BUCKET_NAME,
 	aws_access_key_id=Config.AWS_ACCESS_KEY,
-	aws_secret_access_key=Config.AWS_SECRET_KEY)
+	aws_secret_access_key=Config.AWS_SECRET_KEY
+)
 login_manager = LoginManager()
 
 
@@ -27,6 +29,8 @@ def create_app(configurate=Config):
 
 	login_manager.init_app(app)
 	login_manager.login_view = "auth_bp.login"
+
+	celery_init_app(app)
 
 	@app.route("/")
 	def index():

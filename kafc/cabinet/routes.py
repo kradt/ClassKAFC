@@ -73,7 +73,7 @@ def send_task():
                                        lesson=lesson)
             db_task = cabinet_service.create_task(db=db.session, task=validate_task,
                                                   user_uuid=flask_login.current_user.uuid, file=form.file.data)
-            bot_tasks.send_classtask_to_all_students.delay(db=db.session, bot=bot, task=db_task)
+            bot_tasks.send_classtask_to_all_students.delay(task_id=db_task.id)
             return redirect(url_for(".cabinet_page", from_task=True))
         except ValueError:
             flash("Перед тим як відправляти завдання, добавте свій предмет в особистому кабінеті")

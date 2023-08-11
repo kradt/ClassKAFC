@@ -12,6 +12,7 @@ class Config:
 	BUCKET_NAME = os.getenv("BUCKET_NAME")
 	AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
 	AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
-
-
-	
+	CELERY = {
+        "broker_url": os.getenv("REDIS_URL"),
+        "result_backend": os.getenv("REDIS_URL")
+    }

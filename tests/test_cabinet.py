@@ -1,4 +1,3 @@
-
 def test_cabinet_home_page_without_login(client):
     with client:
         response = client.get("/me", follow_redirects=True)

@@ -1,6 +1,7 @@
 import telebot
 import json
 import os
+from typing import Literal
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -24,7 +25,7 @@ def split_list(arr, wanted_parts=1):
 
 
 # Create Inline Button by dict item
-def create_button(text, value, value_type):
+def create_button(text, value, value_type: Literal["call", "url"]):
     button = telebot.types.InlineKeyboardButton(text=text)
     if value_type == "call":
         button.callback_data = value
@@ -36,7 +37,7 @@ def create_button(text, value, value_type):
 
 
 # Create Inline Keyboard by dict 
-def create_inlineKeyboard(button_items: dict, row: int = 0, value_type: str = "call") -> object:
+def create_inlineKeyboard(button_items: dict, row: int = 0, value_type: Literal["call", "url"]) -> object:
     """
         value_type can be "call" or "url" only
     """

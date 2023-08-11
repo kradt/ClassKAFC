@@ -71,18 +71,3 @@ def send_file(
 	# if file_id sent file not equal file_id in base add file_id to file column in base
 	if file != document_id:
 		file_add_file_id(db, task.file.obj_name, document_id)
-
-
-# Function for send message to all users. Function can send documents and simple text
-def send_task_to_all(db: Session, bot: telebot.TeleBot, task: models.Task) -> None:
-	for i in get_all_users(db):
-		try:
-			bot.send_message(i, bot_text["new_task"].format(task.author.name, task.lesson.name))
-			text = bot_text["task_instance"].format(task.lesson.name, task.title, task.description, task.date_publish)
-			if task.file:
-				send_file(db, bot, chat_id=i, task=task, caption=text)
-			else:
-				bot.send_message(i, text)
-		# If user block bot
-		except Exception:
-			continue

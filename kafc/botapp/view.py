@@ -46,7 +46,11 @@ def person_task_handler(call):
 	else:
 		keyboard = menu.keyboard_for_lessons(lessons)
 		text = bot_text["text_for_get_lessons"]
-	bot.edit_message_text(**path_edit(call), reply_markup=keyboard, text=text)
+	try:
+		bot.edit_message_text(**path_edit(call), reply_markup=keyboard, text=text)
+	except:
+		bot.delete_message(**path_edit(call))
+		bot.send_message(call.message.chat.id, reply_markup=keyboard, text=text)
 
 
 # Handler for get all tasks from particular lesson
