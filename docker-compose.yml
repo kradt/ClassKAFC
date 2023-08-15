@@ -1,0 +1,55 @@
+version: "3.7"
+services:
+  teacher-app:
+    container_name: classkafc
+    env_file: ./.env
+    volumes:
+      - ./:/app/
+    environment:
+      - FLASK_DEBUG=1
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
+      - celery_worker
+      - redis
+  postgres:
+    image: postgres:latest
+    container_name: postgresql
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=found-offer
+    ports:
+      - 5432:5432
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    command: ["celery", "-A", "make_celery:celery_app", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+    - 6379:6379
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/app/ngrok.yml"
+    volumes:
+      - ./ngrok.yml:/app/ngrok.yml
+    ports:
+      - 4040:4040
