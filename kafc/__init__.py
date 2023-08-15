@@ -1,9 +1,11 @@
+import click
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager
-
 from .celery_utills import celery_init_app
 from .utills import ManageFile
 from .config import Config
+import telebot
+from flask import request
 
 
 manage_s3 = ManageFile(
@@ -35,8 +37,17 @@ def create_app(configurate=Config):
 	@app.route("/")
 	def index():
 		return redirect(url_for("cab_bp.cabinet_page"))
-	
-	from .botapp.webhook import bot_bp
+
+	with app.app_context():
+		from kafc.botapp import bot
+		bot.init_app(app)
+		from .botapp.routes import bot_bp
+
+	@app.cli.command("set-webhook")
+	def set_webhook():
+		bot.remove_webhook()
+		bot.set_webhook(url=app.config["WEBHOOK_URL_BASE"] + app.config["WEBHOOK_URL_PATH"])
+
 	from .auth.routes import auth_bp
 	from .cabinet.routes import cab_bp
 	

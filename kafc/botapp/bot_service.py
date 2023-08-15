@@ -1,9 +1,6 @@
 import telebot
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
-
-from . import bot_text
-from ..database import models
+from kafc.database import models
 
 
 # Function for get all lessons from base
@@ -24,30 +21,28 @@ def get_task(db: Session, id: str) -> models.Task:
 	return task
 
 
-# Function for add file_id for already existing file
-def file_add_file_id(db: Session, filename: str, fileid: str) -> None:
-	file = db.query(models.File).filter_by(obj_name=filename).first()
-	file.fileid = fileid
-	db.add(file)
-	db.commit()
-
-
 # Function for add user who sent /start to bot
-def add_new_user(db: Session, user_id: str, username: str) -> None:
-	user = models.BotUser(user_id=user_id, username=username)
-	try:
+def add_new_user(db: Session, user_id: str, username: str) -> models.BotUser:
+	user = db.query(models.BotUser).filter_by(user_id=str(user_id)).first()
+	if not user:
+		user = models.BotUser(user_id=user_id, username=username)
 		db.add(user)
 		db.commit()
-	# If user already in Base
-	except IntegrityError:
-		db.rollback()
-		return 
+	return user
 
 
 # Function for get all user who using bot
 def get_all_users(db: Session) -> list[str]:
 	users = [i.user_id for i in db.query(models.BotUser).all()]
 	return users
+
+
+# Function for add file_id for already existing file
+def file_add_file_id(db: Session, filename: str, fileid: str) -> None:
+	file = db.query(models.File).filter_by(obj_name=filename).first()
+	file.fileid = fileid
+	db.add(file)
+	db.commit()
 
 
 # Function for send file by chat_id

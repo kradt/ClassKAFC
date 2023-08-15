@@ -3,6 +3,7 @@ import json
 import os
 from typing import Literal
 
+
 cur_dir = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -37,7 +38,7 @@ def create_button(text, value, value_type: Literal["call", "url"]):
 
 
 # Create Inline Keyboard by dict 
-def create_inlineKeyboard(button_items: dict, row: int = 0, value_type: Literal["call", "url"]) -> object:
+def create_inlineKeyboard(button_items: dict, row: int = 0, value_type: Literal["call", "url"] = "call") -> object:
     """
         value_type can be "call" or "url" only
     """
