@@ -3,6 +3,9 @@ import requests
 from dotenv import load_dotenv, find_dotenv
 
 
+load_dotenv(find_dotenv())
+
+
 def get_ngrok_public_address():
     try:
         response = requests.get("http://host.docker.internal:4040/api/tunnels")
@@ -12,13 +15,6 @@ def get_ngrok_public_address():
     except Exception as e:
         print("Error fetching Ngrok public address:", e)
         return None
-
-ngrok_public_address = get_ngrok_public_address()
-if ngrok_public_address:
-    print("Ngrok Public Address:", ngrok_public_address)
-
-
-load_dotenv(find_dotenv())
 
 
 class Config:

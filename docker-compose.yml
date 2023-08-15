@@ -12,6 +12,8 @@ services:
       context: .
     ports:
       - 5000:5000
+    expose:
+      - 5000
     depends_on:
       - postgres
       - celery_worker
@@ -22,9 +24,11 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=found-offer
+      - POSTGRES_DB=class
     ports:
       - 5432:5432
+    expose:
+      - 5432
   celery_worker:
     build:
       context: .
@@ -39,7 +43,9 @@ services:
     image: redis:latest
     container_name: redis-container
     ports:
-    - 6379:6379
+      - 6379:6379
+    expose:
+      - 6379
 
   ngrok:
     image: ngrok/ngrok:latest
@@ -53,3 +59,5 @@ services:
       - ./ngrok.yml:/app/ngrok.yml
     ports:
       - 4040:4040
+    expose:
+      - 4040
