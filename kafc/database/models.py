@@ -5,8 +5,8 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
-from . import db
-from .. import manage_s3
+from kafc.database import db
+from kafc import manage_s3
 
 
 BaseModel: DeclarativeMeta = db.Model
