@@ -1,4 +1,3 @@
-import click
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 from .celery_utills import celery_init_app
@@ -36,7 +35,7 @@ def create_app(configurate=Config):
 
 	@app.route("/")
 	def index():
-		return redirect(url_for("cab_bp.cabinet_page"))
+		return redirect(url_for("auth_bp.sign_up"))
 
 	with app.app_context():
 		from kafc.botapp import bot

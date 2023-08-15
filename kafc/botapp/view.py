@@ -21,7 +21,7 @@ def start(message):
 def info_handler(call):
 	bot.edit_message_text(
 		**path_edit(call),
-		text=bot_text["info_text"].format(bot.app.config["WEBHOOK_HOST"]),
+		text=bot_text["info_text"].format(bot.app.config["WEBHOOK_URL_BASE"]),
 		reply_markup=menu.keyboard_for_contact())
 
 
@@ -37,7 +37,7 @@ def back_to_start(call):
 													   str(call.data).split(" ")[0] == "back_to_lesson")
 @bot.with_app_context
 def person_task_handler(call):
-	lessons = bot_service.get_all_lessons(bot.db.session)
+	lessons = bot_service.get_all_lessons(bot.db)
 	if not lessons:
 		keyboard = menu.keyboard_for_back_to_start()
 		text = bot_text["nobody_task"]
@@ -57,7 +57,7 @@ def person_task_handler(call):
 @bot.with_app_context
 def get_tasks(call):
 	lesson_id = str(call.data).split(" ")[1]
-	tasks = bot_service.get_tasks_from_lesson(bot.db.session, lesson_id)
+	tasks = bot_service.get_tasks_from_lesson(bot.db, lesson_id)
 	if tasks:
 		lesson = tasks[0].lesson
 		text = bot_text["text_for_tasks"].format(lesson.name)
@@ -78,13 +78,13 @@ def get_tasks(call):
 @bot.with_app_context
 def task_handler(call):
 	task_id = str(call.data).split(" ")[1]
-	task = bot_service.get_task(bot.db.session, task_id)
+	task = bot_service.get_task(bot.db, task_id)
 	if task:
 		text = bot_text["task_instance"].format(task.lesson.name, task.title, task.description, task.date_publish)
 		keyboard = menu.keyboard_for_back_to_tasks(task.lesson.id)
 		if task.file:
 			bot.delete_message(**path_edit(call))
-			bot_service.send_file(bot.db.session, bot, chat_id=call.message.chat.id, task=task, caption=text, keyboard=keyboard)
+			bot_service.send_file(bot.db, bot, chat_id=call.message.chat.id, task=task, caption=text, keyboard=keyboard)
 	else:
 		text = bot_text["welcome_message"]
 		keyboard = menu.keyboard_for_start()
