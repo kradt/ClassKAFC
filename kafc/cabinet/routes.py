@@ -65,18 +65,21 @@ def update_user():
 def send_task():
     form = TaskForm(lessons=flask_login.current_user.lessons)
     if form.validate_on_submit():
+        # If lesson didn't chose it value equal "0"
         lesson = form.lesson.data
-        # If lesson didn't choose it value equal "0"
-        lesson = LessonBase(name=lesson) if lesson != "0" else None
-        try:
-            validate_task = TaskCreate(title=form.title.data, description=form.description.data, group=form.group.data,
-                                       lesson=lesson)
-            db_task = cabinet_service.create_task(db=db.session, task=validate_task,
-                                                  user_uuid=flask_login.current_user.uuid, file=form.file.data)
-            bot_tasks.send_classtask_to_all_students.delay(task_id=db_task.id)
-            return redirect(url_for(".cabinet_page", from_task=True))
-        except ValueError:
+        if not lesson or lesson == "0":
             flash("Перед тим як відправляти завдання, добавте свій предмет в особистому кабінеті")
+        else:
+            bot_tasks.save_task_to_base_and_send_to_students.delay(
+                                            title=form.title.data, 
+                                            description=form.description.data, 
+                                            group=form.group.data, 
+                                            lesson=lesson,
+                                            user_uuid=flask_login.current_user.uuid,
+                                            file=form.file.data.read() if form.file.data else None,
+                                            filename=form.file.data.filename if form.file.data else None)
+            
+            return redirect(url_for(".cabinet_page", from_task=True))
     return render_template("send_task.html", form=form, user=flask_login.current_user)
 
 

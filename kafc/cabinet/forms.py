@@ -35,7 +35,6 @@ class TaskForm(FlaskForm):
     # TODO: create multiply groups
     group = SelectField(choices=["351"], coerce=int)
     lesson = SelectField(coerce=str)
-
     submit = SubmitField("Відправити завдання")
 
     def __init__(self, lessons, *args, **kwargs):

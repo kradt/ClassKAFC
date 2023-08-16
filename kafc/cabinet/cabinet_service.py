@@ -7,15 +7,20 @@ from kafc.schemas.task_schema import TaskCreate
 
 # ---- Task Functionality ----
 
-# function create new task by TaskCreate schema
-def create_task(db: Session, task: TaskCreate, user_uuid: str, file: FileStorage | None = None) -> models.Task:
+# Function create new task by TaskCreate schema
+def create_task(
+		db: Session,
+		task: TaskCreate,
+		user_uuid: str,
+		file: bytes | None = None,
+		filename: str | None = None) -> models.Task:
 	user = db.query(models.User).filter_by(uuid=user_uuid).first()
 	db_task = models.Task(title=task.title, description=task.description, group=task.group)
 
 	lesson = db.query(models.Lesson).filter_by(name=task.lesson.name).first()
 	# If the file was transferred, create file object and add him to task
 	if file:
-		db_file = models.File(file_name=str(file.filename), file_data=file.read())
+		db_file = models.File(file_name=filename, file_data=file)
 		db_task.file = db_file
 
 	db_task.lesson = lesson
@@ -91,6 +96,8 @@ def remove_user_lesson(db: Session, user_uuid: str, lesson_name: str) -> models.
 	if not lesson:
 		return None
 	user.lessons.remove(lesson)
+	if not lesson.tasks:
+		db.delete(lesson)
 	db.add(user)
 	db.commit()
 	return user

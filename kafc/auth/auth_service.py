@@ -12,7 +12,7 @@ def get_user(db: Session, uuid: str) -> models.User:
 # function returning user by username
 def get_user_by_username(db: Session, username: str) -> models.User:
 	return db.query(models.User).filter_by(username=username).first()
-	
+
 
 # function create new user by schema
 def create_user(db: Session, user: UserCreate) -> models.User | None:

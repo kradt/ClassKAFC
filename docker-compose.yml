@@ -39,6 +39,7 @@ services:
     command: ["celery", "-A", "make_celery:celery_app", "worker", "--loglevel=info"]
     depends_on:
       - redis
+    restart: "on-failure:2"
   redis:
     image: redis:latest
     container_name: redis-container
@@ -46,7 +47,6 @@ services:
       - 6379:6379
     expose:
       - 6379
-
   ngrok:
     image: ngrok/ngrok:latest
     restart: unless-stopped
