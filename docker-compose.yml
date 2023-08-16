@@ -18,6 +18,13 @@ services:
       - postgres
       - celery_worker
       - redis
+  test-teacher-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: ["python", "-m", "pytest", "tests"]
+    depends_on:
+      - teacher-app
   postgres:
     image: postgres:latest
     container_name: postgresql

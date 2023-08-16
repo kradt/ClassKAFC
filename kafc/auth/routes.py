@@ -16,7 +16,7 @@ from . import auth_service
 auth_bp = Blueprint(name="auth_bp", template_folder="templates", static_folder="static", import_name=__name__)
 
 
-# Auth user
+# Login user
 @auth_bp.route("/login", methods=["POST", "GET"])
 def login():
 	form = LoginForm()

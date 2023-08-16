@@ -1,27 +1,22 @@
-from kafc.database import models
+from kafc.database import db, models
 
 
-def test_register_user(client):
-    login = "test"
-    password = "A9090997a"
-
+def test_register_user(client, user):
     with client:
         response = client.post("/auth/sign-up",
-                               data={"login": login, "password": password, "repeat_password": password},
+                               data={"login": user["login"], "password": user["password"], "repeat_password": user["password"]},
                                follow_redirects=True)
-        user = models.User.query.filter_by(username=login).first()
-    assert user is not None
-    assert user.username == login
+    with client.application.app_context():
+        db_user = db.session.query(models.User).filter_by(username=user["login"]).first()
+    assert db_user is not None
+    assert db_user.username == user["login"]
     assert response.status_code == 200
 
 
-def test_user_already_exist(client):
-    login = "test"
-    password = "A9090997a"
-
+def test_user_already_exist(client, register, user):
     with client:
         response = client.post("/auth/sign-up",
-                               data={"login": login, "password": password, "repeat_password": password},
+                               data={"login": user["login"], "password": user["password"], "repeat_password": user["password"]},
                                follow_redirects=True)
     assert bytes("Користувач з таким username уже існує", "utf-8") in response.data
     assert response.status_code == 200
